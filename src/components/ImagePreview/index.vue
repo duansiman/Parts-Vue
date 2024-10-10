@@ -33,13 +33,16 @@ const props = defineProps({
 });
 
 const realSrc = computed(() => {
+  console.log(props.src)
   if (!props.src) {
     return;
   }
   let real_src = props.src.split(",")[0];
+  console.log(real_src);
   if (isExternal(real_src)) {
     return real_src;
   }
+  console.log(import.meta.env.VITE_APP_BASE_API + real_src);
   return import.meta.env.VITE_APP_BASE_API + real_src;
 });
 

@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
 import Layout from '@/layout'
-
+import HomeLayout from '@/layout/homeLayout.vue'
 /**
  * Note: 路由配置项
  *
@@ -58,7 +58,7 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '',
+    path: '/index',
     component: Layout,
     redirect: '/index',
     children: [
@@ -69,6 +69,16 @@ export const constantRoutes = [
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: '/home'
+  },
+  {
+    path: '/home',
+    component: HomeLayout,
+    hidden: true
   },
   {
     path: '/user',
