@@ -3,7 +3,9 @@
     <el-container>
       <el-header height="5vh" :style="{ '--current-color': theme }">Header</el-header>
       <el-container style="height: 95vh;">
-        <el-aside width="20%">Aside1</el-aside>
+        <el-aside width="20%">
+			<LeftAside/>
+		</el-aside>
         <el-main >Main</el-main>
       </el-container>
     </el-container>
@@ -11,7 +13,7 @@
 </template>
 
 <script setup>
-
+import LeftAside from './leftAside.vue'
 import useSettingsStore from '@/store/modules/settings'
 
 const settingsStore = useSettingsStore()
