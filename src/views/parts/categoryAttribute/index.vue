@@ -1,22 +1,22 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="属性名称" prop="categoryId">
-        <el-input
-          v-model="queryParams.categoryId"
-          placeholder="请输入属性名称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="属性描述" prop="attrId">
-        <el-input
-          v-model="queryParams.attrId"
-          placeholder="请输入属性描述"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
+		
+	   <el-form-item>
+		<el-select
+		   v-model="queryParams.categoryId"
+		   placeholder="选择分类"
+		   clearable
+		   style="width: 220px;"
+		>
+		   <el-option
+			  v-for="category in categoryList"
+			  :key="category.id"
+			  :label="category.name"
+			  :value="category.id"
+		   />
+		</el-select>
+	  </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -24,7 +24,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -42,7 +42,7 @@
           @click="handleUpdate"
           v-hasPermi="['parts:categoryAttribute:edit']"
         >修改</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -71,16 +71,25 @@
 	        v-hasPermi="['parts:categoryAttribute:import']"
 	     >导入分类属性</el-button>
 	  </el-col>
+	  <el-col :span="1.5">
+	     <el-button
+	        type="info"
+	        plain
+	        icon="Upload"
+	        @click="handleImportAll"
+	        v-hasPermi="['parts:categoryAttribute:importAll']"
+	     >导入属性</el-button>
+	  </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="categoryAttributeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="分类名称" align="center" prop="categoryName" />
-      <el-table-column label="属性名称" align="center" prop="attrName" />
+      <el-table-column label="分类名称" align="center" prop="category.name" />
+      <el-table-column label="属性名称" align="center" prop="attr.attrName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['parts:categoryAttribute:edit']">修改</el-button>
+<!--          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['parts:categoryAttribute:edit']">修改</el-button -->
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['parts:categoryAttribute:remove']">删除</el-button>
         </template>
       </el-table-column>
@@ -115,6 +124,7 @@
 	<!-- 用户导入对话框 -->
 	<el-dialog :title="upload.title" v-model="upload.open" width="400px" append-to-body>
 		<el-select
+		   v-show="upload.showCategory"
 		   v-model="upload.categoryId"
 		   placeholder="选择部件分类"
 		   clearable
@@ -189,6 +199,7 @@ const upload = reactive({
   title: "",
   // 是否禁用上传
   isUploading: false,
+  showCategory: true,
   // 是否更新已经存在的用户数据
   categoryId: '选择部件分类',
   // 设置上传的请求头部
@@ -329,10 +340,23 @@ function handleImport() {
   upload.open = true;
   getCategoryList();
 };
+function handleImportAll() {
+	upload.title = "部件属性导入";
+	upload.open = true;
+	upload.showCategory = false;
+	upload.url = import.meta.env.VITE_APP_BASE_API + "/parts/categoryAttribute/uploadAll"
+	
+}
 
 /** 查询部件类型信息列表 */
 function getCategoryList() {
-  listCategory(queryParams.value).then(response => {
+	const queryParams = {
+    pageNum: 1,
+    pageSize: 10000,
+    categoryName: null,
+    attrName: null,
+  }
+  listCategory(queryParams).then(response => {
     categoryList.value = response.rows;
   });
 }
@@ -362,5 +386,6 @@ function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 };
 
+getCategoryList();
 getList();
 </script>

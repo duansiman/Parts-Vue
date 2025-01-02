@@ -33,12 +33,12 @@ const props = defineProps({
 });
 
 const realSrc = computed(() => {
-  console.log(props.src)
+  //console.log(props.src)
   if (!props.src) {
     return;
   }
   let real_src = props.src.split(",")[0];
-  console.log(real_src);
+  //console.log(real_src);
   if (isExternal(real_src)) {
     return real_src;
   }

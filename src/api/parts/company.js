@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询部件公司信息列表
 export function listCompany(query) {
   return request({
-    url: '/parts/company/list',
+    url: '/public/parts/company/list',
     method: 'get',
     params: query
   })

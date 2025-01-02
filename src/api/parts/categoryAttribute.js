@@ -9,6 +9,14 @@ export function listCategoryAttribute(query) {
   })
 }
 
+export function listUserCategoryAttribute(query) {
+  return request({
+    url: '/parts/categoryAttribute/user/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询部件类型的属性信息详细
 export function getCategoryAttribute(id) {
   return request({

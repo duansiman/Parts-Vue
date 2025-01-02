@@ -9,6 +9,14 @@ export function listAttribute(query) {
   })
 }
 
+export function listAttributeV2(query) {
+  return request({
+    url: '/parts/attribute/listV2',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询部件属性信息详细
 export function getAttribute(id) {
   return request({

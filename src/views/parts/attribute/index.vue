@@ -9,14 +9,6 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="属性描述" prop="description">
-        <el-input
-          v-model="queryParams.description"
-          placeholder="请输入属性描述"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -76,10 +68,11 @@
 
     <el-table v-loading="loading" :data="attributeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增ID" align="center" prop="id" />
       <el-table-column label="属性名称" align="center" prop="name" />
       <el-table-column label="属性描述" align="center" prop="description" />
       <el-table-column label="属性类型" align="center" prop="type" />
+	  <el-table-column label="是否为功能模版属性" align="center" prop="funcTemplateAttr" />
+	  <el-table-column label="是否可见" align="center" prop="visible" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['parts:attribute:edit']">修改</el-button>
@@ -98,13 +91,22 @@
 
     <!-- 添加或修改部件属性信息对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="attributeRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="attributeRef" :model="form" :rules="rules" label-width="150px">
         <el-form-item label="属性名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入属性名称" />
         </el-form-item>
         <el-form-item label="属性描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入属性描述" />
         </el-form-item>
+		<el-form-item label="属性类型" prop="type">
+		  <el-input v-model="form.type" placeholder="请输入属性类型" />
+		</el-form-item>
+		<el-form-item label="是否为功能模版属性" prop="type">
+		  <el-input v-model="form.funcTemplateAttr" placeholder="请输入是否为功能模版属性" />
+		</el-form-item>
+		<el-form-item label="是否可见" prop="type">
+		  <el-input v-model="form.visible" placeholder="请输入是否可见" />
+		</el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">

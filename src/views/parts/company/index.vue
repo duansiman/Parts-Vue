@@ -133,7 +133,6 @@
 
     <el-table v-loading="loading" :data="companyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增ID" align="center" prop="id" />
       <el-table-column label="公司名称缩写" align="center" prop="name" />
       <el-table-column label="英文名称" align="center" prop="nameEn" />
       <el-table-column label="英文全称" align="center" prop="fullNameEn" />
@@ -147,6 +146,7 @@
 	  </el-table-column>
       <el-table-column label="网址" align="center" prop="website" />
       <el-table-column label="注册地或国籍" align="center" prop="registrationPlace" />
+	  <el-table-column label="排序" align="center" prop="sort" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['parts:company:edit']">修改</el-button>
@@ -190,6 +190,9 @@
         <el-form-item label="注册地或国籍" prop="registrationPlace">
           <el-input v-model="form.registrationPlace" placeholder="请输入注册地或国籍" />
         </el-form-item>
+		<el-form-item label="排序" prop="sort">
+		  <el-input v-model="form.sort" placeholder="请输入排序等级" />
+		</el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">

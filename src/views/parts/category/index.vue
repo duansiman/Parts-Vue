@@ -1,26 +1,10 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="部件类型名" prop="name">
         <el-input
           v-model="queryParams.name"
           placeholder="请输入部件类型名"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部件类型描述" prop="description">
-        <el-input
-          v-model="queryParams.description"
-          placeholder="请输入部件类型描述"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部件图标" prop="logo">
-        <el-input
-          v-model="queryParams.logo"
-          placeholder="请输入部件图标"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -84,11 +68,11 @@
 
     <el-table v-loading="loading" :data="categoryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增ID" align="center" prop="id" />
 	  <el-table-column label="部件类型序号" align="center" prop="seq" />
       <el-table-column label="部件类型名" align="center" prop="name" />
       <el-table-column label="部件类型描述" align="center" prop="description" />
-      <el-table-column label="部件图标" align="center" prop="logo" />
+	  <el-table-column label="产品组" align="center" prop="productGroup" />
+	  <el-table-column label="排序" align="center" prop="sort" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['parts:category:edit']">修改</el-button>
@@ -107,16 +91,22 @@
 
     <!-- 添加或修改部件类型信息对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="categoryRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="categoryRef" :model="form" :rules="rules" label-width="120px">
+		  <el-form-item label="部件类型序号" prop="seq">
+		    <el-input v-model="form.seq" placeholder="请输入部件类型序号" />
+		  </el-form-item>
         <el-form-item label="部件类型名" prop="name">
           <el-input v-model="form.name" placeholder="请输入部件类型名" />
         </el-form-item>
         <el-form-item label="部件类型描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入部件类型描述" />
         </el-form-item>
-        <el-form-item label="部件图标" prop="logo">
-          <el-input v-model="form.logo" placeholder="请输入部件图标" />
-        </el-form-item>
+		<el-form-item label="产品组" prop="productGroup">
+		  <el-input v-model="form.productGroup" placeholder="请输入产品组" />
+		</el-form-item>
+		<el-form-item label="排序" prop="sort">
+		  <el-input v-model="form.sort" placeholder="请输入排序等级" />
+		</el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -220,7 +210,10 @@ const data = reactive({
     ],
     updateTime: [
       { required: true, message: "更新时间不能为空", trigger: "blur" }
-    ]
+    ],
+	productGroup: [
+	  { required: true, message: "产品组不能为空", trigger: "blur" }
+	]
   }
 });
 

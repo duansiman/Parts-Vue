@@ -26,7 +26,7 @@ import usePermissionStore from '@/store/modules/permission'
 const search = ref('');
 const options = ref([]);
 const searchPool = ref([]);
-const show = ref(false);
+const show = ref(true);
 const fuse = ref(undefined);
 const headerSearchSelectRef = ref(null);
 const router = useRouter();

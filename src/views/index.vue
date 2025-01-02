@@ -9,6 +9,12 @@
             </div>
           </template>
           <div class="body">
+			  <el-text>公司总数：{{statObj.companySize}}</el-text>
+			  <el-table :data="statObj.companyDataSize" style="margin-top: 10px;">
+			    <el-table-column label="公司名称" align="center" prop="name" />
+			    <el-table-column label="部件数量" align="center" prop="count" />
+			  </el-table>
+			  
           </div>
         </el-card>
       </el-col>
@@ -20,6 +26,27 @@
 	        </div>
 	      </template>
 	      <div class="body">
+			  <el-text>分类总数：{{statObj.categorySize}}</el-text>
+			  <el-table :data="statObj.categoryDataSize" style="margin-top: 10px;">
+			    <el-table-column label="分类名称" align="center" prop="name" />
+			    <el-table-column label="部件数量" align="center" prop="count" />
+			  </el-table>
+	      </div>
+	    </el-card>
+	  </el-col>
+	  <el-col :xs="24" :sm="24" :md="12" :lg="8">
+	    <el-card class="update-log">
+	      <template v-slot:header>
+	        <div class="clearfix">
+	          <span>部件属性</span>
+	        </div>
+	      </template>
+	      <div class="body">
+			  <el-text>属性总数：{{statObj.attrSize}}</el-text>
+			  <el-table :data="statObj.categoryAttrSize" style="margin-top: 10px;">
+				<el-table-column label="分类名称" align="center" prop="name" />
+				<el-table-column label="属性数量" align="center" prop="count" />
+			  </el-table>
 	      </div>
 	    </el-card>
 	  </el-col>
@@ -28,9 +55,13 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.8')
-
-function goTarget(url) {
-  window.open(url, '__blank')
-}
+	import { stat } from "@/api/parts/componentStatistics";
+	
+	const statObj = ref({});
+	
+	stat().then(response => {
+	  statObj.value = response.data;
+	  console.log("statObj=", statObj.value)
+	});
+	
 </script>

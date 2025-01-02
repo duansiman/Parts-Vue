@@ -3,7 +3,15 @@ import request from '@/utils/request'
 // 查询部件类型显示属性配置列表
 export function listCategoryAttributeShowList(query) {
   return request({
-    url: '/parts/categoryAttributeShowList/list',
+    url: '/public/parts/categoryAttributeShowList/list',
+    method: 'get',
+    params: query
+  })
+}
+
+export function showCategoryAttribute(query) {
+  return request({
+    url: '/parts/categoryAttributeShowList/show',
     method: 'get',
     params: query
   })

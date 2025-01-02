@@ -27,7 +27,7 @@
       <el-form-item label="部件公司" prop="companyId">
 		  <el-select
 		     v-model="queryParams.companyId"
-		     placeholder="选择部件分类"
+		     placeholder="选择部件公司"
 		     clearable
 		     style="width: 200px;"
 		  	@keyup.enter="handleQuery"
@@ -66,22 +66,35 @@
 	        v-hasPermi="['parts:componentData:import']"
 	     >导入部件数据</el-button>
 	  </el-col>
+	  <el-col :span="1.5">
+	     <el-button
+	        type="info"
+	        plain
+	        icon="Upload"
+	        @click="handleEplImport"
+	        v-hasPermi="['parts:componentData:eplImport']"
+	     >导入EPL数据</el-button>
+	  </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="componentDataList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading"  :data="componentDataList" border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 		
-	  <!-- 动态生成列 -->
-	      <el-table-column
-	        v-for="(attr, index) in componentDataList[0].attrs"
-	        :key="index"
-	        :label="attr.attrName"
-	        align="center"
-	      >
+		<el-table-column
+			v-for="(attr, index) in categoryAttributeList"
+			:key="attr.attrId"
+			:label="attr.attrName"
+			:title="attr.attrName"
+			align="center"
+			show-overflow-tooltip
+		>
 	        <template #default="scope">
-			  <!-- {{scope.row.attrs.attrValue}} -->
-	          {{ getAttrValue(scope.row.attrs, attr.attrId) }}
+				<div class="componentValue" style="width: 100%; height: 150px;">
+					<ImagePreview v-if="attr.attrType == 'Image'" :src="getAttrValue(scope.row.attrs, attr.attrId)" width="100%" height="100%" />
+					<el-text  v-if="attr.attrType !== 'Image'" >{{ getAttrValue(scope.row.attrs, attr.attrId) }}</el-text>
+				</div>
+				
 	        </template>
 	      </el-table-column>
 
@@ -104,6 +117,7 @@
 	<!-- 用户导入对话框 -->
 	<el-dialog :title="upload.title" v-model="upload.open" width="400px" append-to-body>
 		<el-select
+		   v-show="upload.showSelectCategory"
 		   v-model="upload.categoryId"
 		   placeholder="选择部件分类"
 		   style="width: 240px; margin-bottom: 10px;"
@@ -134,7 +148,7 @@
 	            <!-- <div class="el-upload__tip">
 	               <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的用户数据
 	            </div> -->
-	            <span>仅允许导入xls、xlsx、.zip格式文件。</span>
+	            <span>{{upload.fileType}}</span>
 	         </div>
 	      </template>
 	   </el-upload>
@@ -153,6 +167,8 @@ import { listCategory } from "@/api/parts/category";
 import { listComponentData, getComponentData, delComponentData, addComponentData, updateComponentData } from "@/api/parts/componentData";
 import { listCompany } from "@/api/parts/company";
 import { getToken } from "@/utils/auth";
+import { listCategoryAttribute } from "@/api/parts/categoryAttribute";
+
 
 
 const { proxy } = getCurrentInstance();
@@ -160,6 +176,7 @@ const { proxy } = getCurrentInstance();
 const componentDataList = ref([]);
 const categoryList = ref([]);
 const companyList = ref([]);
+const categoryAttributeList = ref([]);
 
 
 const open = ref(false);
@@ -181,6 +198,8 @@ const upload = reactive({
   // 是否更新已经存在的用户数据
   updateSupport: 0,
   categoryId: 0,
+  fileType: "",
+  showSelectCategory: true,
   // 设置上传的请求头部
   headers: { Authorization: "Bearer " + getToken() },
   // 上传的地址
@@ -192,6 +211,7 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
+	allAttr: true,
     componentId: null,
     categoryId: null,
     companyId: null,
@@ -221,7 +241,8 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
   loading.value = true;
   listComponentData(queryParams.value).then(response => {
-    componentDataList.value = response.rows;
+	categoryAttributeList.value = response.data.attrItems;
+    componentDataList.value = response.data.dataItems;
     total.value = response.total;
     loading.value = false;
   });
@@ -334,7 +355,17 @@ const getAttrValue = (attrs, attrId) => {
 function handleImport() {
   upload.title = "部件数据导入";
   upload.open = true;
+  upload.fileType  = "仅允许导入xls、xlsx格式文件。";
 };
+
+function handleEplImport() {
+  upload.title = "部件数据导入";
+  upload.open = true;
+  upload.showSelectCategory = false;
+  upload.fileType  = "仅允许导入zip格式文件。";
+  upload.url = import.meta.env.VITE_APP_BASE_API + "/parts/componentData/eplUpload"
+};
+
 
 /**文件上传中处理 */
 const handleFileUploadProgress = (event, file, fileList) => {

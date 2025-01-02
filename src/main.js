@@ -26,6 +26,7 @@ import './permission' // permission control
 
 import { useDict } from '@/utils/dict'
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
+import {loginService} from '@/utils/user/loginService'
 
 // 分页组件
 import Pagination from '@/components/Pagination'
@@ -43,6 +44,8 @@ import ImagePreview from "@/components/ImagePreview"
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
+import usePermissionStore from '@/store/modules/permission'
+
 
 const app = createApp(App)
 
@@ -55,6 +58,10 @@ app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
+
+// 业务方法挂载
+app.config.globalProperties.loginService = loginService
+
 
 // 全局组件挂载
 app.component('DictTag', DictTag)
@@ -81,4 +88,12 @@ app.use(ElementPlus, {
   size: Cookies.get('size') || 'default'
 })
 
+// const permissionStore = usePermissionStore();
+// permissionStore.routes.forEach(route => {
+// 	router.addRoute(route);
+// });
+// permissionStore.load = true;
+
 app.mount('#app')
+
+

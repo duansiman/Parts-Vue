@@ -4,6 +4,8 @@ import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
 import InnerLink from '@/layout/components/InnerLink'
+import { defineStore } from 'pinia';
+
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
@@ -12,12 +14,22 @@ const usePermissionStore = defineStore(
   'permission',
   {
     state: () => ({
+	  load: false,	
       routes: [],
       addRoutes: [],
       defaultRoutes: [],
       topbarRouters: [],
       sidebarRouters: []
     }),
+	persist: {
+	  enabled: true,
+	  strategies: [
+	    {
+	      storage: localStorage,
+	      key: 'permission'
+	    }
+	  ]
+	},
     actions: {
       setRoutes(routes) {
         this.addRoutes = routes

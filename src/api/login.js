@@ -58,3 +58,16 @@ export function getCodeImg() {
     timeout: 20000
   })
 }
+
+// 获取验证码
+export function getEmailCaptcha(query) {
+  return request({
+    url: '/emailCaptcha',
+    headers: {
+      isToken: false
+    },
+    method: 'get',
+    timeout: 20000,
+	params: query
+  })
+}

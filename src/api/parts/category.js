@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询部件类型信息列表
 export function listCategory(query) {
   return request({
-    url: '/parts/category/list',
+    url: '/public/parts/category/list',
     method: 'get',
     params: query
   })
