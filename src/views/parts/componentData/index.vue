@@ -75,6 +75,24 @@
 	        v-hasPermi="['parts:componentData:eplImport']"
 	     >导入EPL数据</el-button>
 	  </el-col>
+	  <el-col :span="1.5">
+	     <el-button
+	        type="info"
+	        plain
+	        icon="Upload"
+	        @click="handleFileImport"
+	        v-hasPermi="['parts:componentData:file:upload']"
+	     >导入文件</el-button>
+	  </el-col>
+	  <el-col :span="1.5">
+	     <el-button
+	        type="info"
+	        plain
+	        icon="Upload"
+	        @click="handleParseEpl"
+	        v-hasPermi="['parts:componentData:parseElp']"
+	     >解析EPL数据</el-button>
+	  </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -164,7 +182,7 @@
 
 <script setup name="ComponentData">
 import { listCategory } from "@/api/parts/category";
-import { listComponentData, getComponentData, delComponentData, addComponentData, updateComponentData } from "@/api/parts/componentData";
+import { listComponentData, getComponentData, delComponentData, addComponentData, updateComponentData, parseElpData } from "@/api/parts/componentData";
 import { listCompany } from "@/api/parts/company";
 import { getToken } from "@/utils/auth";
 import { listCategoryAttribute } from "@/api/parts/categoryAttribute";
@@ -365,6 +383,20 @@ function handleEplImport() {
   upload.fileType  = "仅允许导入zip格式文件。";
   upload.url = import.meta.env.VITE_APP_BASE_API + "/parts/componentData/eplUpload"
 };
+
+function handleFileImport() {
+  upload.title = "部件文件导入";
+  upload.open = true;
+  upload.showSelectCategory = false;
+  upload.fileType  = "仅允许导入zip格式文件。";
+  upload.url = import.meta.env.VITE_APP_BASE_API + "/parts/componentData/file/upload"
+};
+
+function handleParseEpl() {
+	proxy.$modal.confirm('确认解析服务器上ELP文件？').then(function() {
+	  return parseElpData();
+	}).catch(() => {});
+}
 
 
 /**文件上传中处理 */

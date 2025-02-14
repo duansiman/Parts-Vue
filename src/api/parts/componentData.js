@@ -17,6 +17,14 @@ export function getComponentData(id) {
   })
 }
 
+// 查询部件数据详细
+export function parseElpData(id) {
+  return request({
+    url: '/parts/componentData/parseElp',
+    method: 'get'
+  })
+}
+
 // 新增部件数据
 export function addComponentData(data) {
   return request({
