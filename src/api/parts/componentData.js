@@ -18,10 +18,10 @@ export function getComponentData(id) {
 }
 
 // 查询部件数据详细
-export function parseElpData(id) {
+export function parseElpData() {
   return request({
     url: '/parts/componentData/parseElp',
-    method: 'get'
+    method: 'post'
   })
 }
 
