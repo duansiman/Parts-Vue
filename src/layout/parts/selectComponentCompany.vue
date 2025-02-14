@@ -25,11 +25,11 @@
 		<el-dialog :title="selectData.title" v-model="selectData.open" width="625px" append-to-body>
 		  <el-row :gutter="10" class="mb8">
 		    <el-radio-group v-model="selectedCompany" size="large" @change="changeCompany">  
-			  <el-col :span="1.5" v-for="company in companyList" >
+			  <el-col :span="4.8" v-for="company in companyList" style="margin-bottom: 5px;">
 				  <el-radio-button 
 					:key="company.id" 
 					:value="company.id">
-					  <el-image :src="company.logo" width="100" height="100" /><br/>
+					  <el-image :src="company.logo" style="width: 70px; height: 60px" /><br/>
 					  <el-text>{{ company.name }}</el-text>
 				  </el-radio-button>
 			  </el-col>

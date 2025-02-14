@@ -436,7 +436,7 @@ function handleExport() {
 function handleCompanyImport() {
   upload.title = "公司导入";
   upload.open = true;
-  upload.url = upload.uploadCompanyUrl;
+  upload.url = import.meta.env.VITE_APP_BASE_API + '/parts/company/upload';
   upload.showTemplate = true;
 };
 
@@ -444,7 +444,7 @@ function handleCompanyImport() {
 function handleLogoImport() {
   upload.title = "公司Logo导入";
   upload.open = true;
-  upload.url = upload.uploadCompanyLogoUrl;
+  upload.url = import.meta.env.VITE_APP_BASE_API + '/parts/company/logo/upload';
   upload.showTemplate = false;
 };
 

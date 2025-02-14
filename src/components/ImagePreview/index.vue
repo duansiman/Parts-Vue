@@ -1,7 +1,7 @@
 <template>
   <el-image
     :src="`${realSrc}`"
-    fit="cover"
+    fit="contain"
     :style="`width:${realWidth};height:${realHeight};`"
     :preview-src-list="realSrcList"
     preview-teleported
@@ -23,6 +23,10 @@ const props = defineProps({
     default: ""
   },
   width: {
+    type: [Number, String],
+    default: ""
+  },
+  maxWidth: {
     type: [Number, String],
     default: ""
   },
@@ -65,6 +69,10 @@ const realWidth = computed(() =>
   typeof props.width == "string" ? props.width : `${props.width}px`
 );
 
+const realMaxWidth = computed(() =>
+  typeof props.maxWidth == "string" ? props.maxWidth : `${props.maxWidth}px`
+);
+
 const realHeight = computed(() =>
   typeof props.height == "string" ? props.height : `${props.height}px`
 );
@@ -73,7 +81,8 @@ const realHeight = computed(() =>
 <style lang="scss" scoped>
 .el-image {
   border-radius: 5px;
-  background-color: #ebeef5;
+  // background-color: #ebeef5;
+  background-color: transparent;
   box-shadow: 0 0 5px 1px #ccc;
   :deep(.el-image__inner) {
     transition: all 0.3s;

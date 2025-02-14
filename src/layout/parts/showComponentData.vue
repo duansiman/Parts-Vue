@@ -38,7 +38,7 @@
 				
 	        <template #default="scope">
 				<div class="componentValue" style="width: 100%; height: 150px;">
-					<ImagePreview v-if="colunm.attrType == 'Image'" :src="getAttrValue(scope.row.attrs, colunm.attrId)" width="100%" height="150px" />
+					<ImagePreview v-if="colunm.attrType == 'Image'" :src="getAttrValue(scope.row.attrs, colunm.attrId)" :height="'100%'"/>
 					<el-text v-if="colunm.attrType !== 'Image'">{{ getAttrValue(scope.row.attrs, colunm.attrId) }}</el-text>
 				</div>
 	        </template>
