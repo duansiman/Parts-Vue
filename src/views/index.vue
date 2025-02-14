@@ -10,11 +10,12 @@
           </template>
           <div class="body">
 			  <el-text>公司总数：{{statObj.companySize}}</el-text>
-			  <el-table :data="statObj.companyDataSize" style="margin-top: 10px;">
-			    <el-table-column label="公司名称" align="center" prop="name" />
-			    <el-table-column label="部件数量" align="center" prop="count" />
-			  </el-table>
-			  
+			  <el-scrollbar height="60vh">
+				  <el-table :data="statObj.companyDataSize" style="margin-top: 10px;">
+					<el-table-column label="公司名称" align="center" prop="name" />
+					<el-table-column label="部件数量" align="center" prop="count" />
+				  </el-table>
+			  </el-scrollbar>
           </div>
         </el-card>
       </el-col>
@@ -27,10 +28,12 @@
 	      </template>
 	      <div class="body">
 			  <el-text>分类总数：{{statObj.categorySize}}</el-text>
-			  <el-table :data="statObj.categoryDataSize" style="margin-top: 10px;">
-			    <el-table-column label="分类名称" align="center" prop="name" />
-			    <el-table-column label="部件数量" align="center" prop="count" />
-			  </el-table>
+			  <el-scrollbar height="60vh">
+				  <el-table :data="statObj.categoryDataSize" style="margin-top: 10px;">
+					<el-table-column label="分类名称" align="center" prop="name" />
+					<el-table-column label="部件数量" align="center" prop="count" />
+				  </el-table>
+			  </el-scrollbar>
 	      </div>
 	    </el-card>
 	  </el-col>
@@ -43,10 +46,12 @@
 	      </template>
 	      <div class="body">
 			  <el-text>属性总数：{{statObj.attrSize}}</el-text>
-			  <el-table :data="statObj.categoryAttrSize" style="margin-top: 10px;">
-				<el-table-column label="分类名称" align="center" prop="name" />
-				<el-table-column label="属性数量" align="center" prop="count" />
-			  </el-table>
+			  <el-scrollbar height="60vh">
+				  <el-table :data="statObj.categoryAttrSize" style="margin-top: 10px;">
+					<el-table-column label="分类名称" align="center" prop="name" />
+					<el-table-column label="属性数量" align="center" prop="count" />
+				  </el-table>
+			  </el-scrollbar>
 	      </div>
 	    </el-card>
 	  </el-col>
