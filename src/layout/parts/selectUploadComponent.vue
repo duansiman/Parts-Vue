@@ -42,6 +42,7 @@
 
 <script setup>
 	import { getToken } from "@/utils/auth";
+	import { computed, inject, watch, nextTick } from 'vue';
 	
 	const { proxy } = getCurrentInstance();
 	const { checkLogin } = proxy.loginService();
@@ -100,7 +101,13 @@
 	const updateComponentDataFilterFile = inject('updateComponentDataFilterFile');
 	/** 提交按钮 */
 	function submitFileForm() {
-		updateComponentDataFilterFile(componentDataFilterFile.value)
+		if (componentDataFilterFile.value) {
+			// 修改文件的 uid
+			componentDataFilterFile.value.uid = Date.now() + Math.random().toString(36).substr(2);
+		}
+		console.log("submitFileForm", componentDataFilterFile.value);
+		updateComponentDataFilterFile(componentDataFilterFile.value);
+		upload.open = false;
 	};
 </script>
 

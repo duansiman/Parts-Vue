@@ -16,6 +16,9 @@
 
 <script setup>
 import { scrollTo } from '@/utils/scroll-to'
+import { loginService } from '@/utils/user/loginService'
+
+const { checkLogin } = loginService();
 
 const props = defineProps({
   total: {
@@ -77,6 +80,9 @@ const pageSize = computed({
   }
 })
 function handleSizeChange(val) {
+  if (!checkLogin()) {
+    return;
+  }
   if (currentPage.value * val > props.total) {
     currentPage.value = 1
   }
@@ -86,6 +92,9 @@ function handleSizeChange(val) {
   }
 }
 function handleCurrentChange(val) {
+  if (!checkLogin()) {
+    return;
+  }
   emit('pagination', { page: val, limit: pageSize.value })
   if (props.autoScroll) {
     scrollTo(0, 800)

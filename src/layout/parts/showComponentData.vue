@@ -7,7 +7,7 @@
 		@select="handleSelect"
 		border
 		>
-		<el-table-column v-if="categoryAttributeList.length!=0" type="selection" width="55" align="center" />
+		<el-table-column v-if="categoryAttributeList.length!=0 && isVIP" type="selection" width="55" align="center" />
 		
 	  <!-- 动态生成列 -->
 	      <el-table-column
@@ -47,7 +47,7 @@
     
 	<div>
 		<el-row type="flex" justify="start" align="middle" style="gap: 10px; margin: 20px 0px">
-			<el-col style="flex: 0 0 auto;"><el-button type="primary" v-if="showDownload" @click="downloadData">下载</el-button></el-col>
+			<el-col style="flex: 0 0 auto;"><el-button type="primary" v-if="isVIP && showDownload" @click="downloadData">下载</el-button></el-col>
 			<el-col style="flex: 1 1 auto;">
 				<!-- <el-pagination
 				  v-show="total>0"
@@ -129,7 +129,8 @@
 </template>
 
 <script setup name="ShowComponentData">
-	import { computed, inject, watch } from 'vue';
+	import { computed, inject, watch, nextTick } from 'vue';
+	import { checkRole } from '@/utils/permission';
 	
 	import { listCategory } from "@/api/parts/user/userCategory";
 	import { listComponentData, uploadFilterFile, downloadComponentData } from "@/api/parts/user/userComponentData";
@@ -139,6 +140,12 @@
 
 	const { proxy } = getCurrentInstance();
 	const { loginName, isLogin, logout, login, getInfo } = proxy.loginService();
+	
+	const isVIP = computed(() => {
+		return checkRole(['VIP']);
+	});
+	
+	const showDownload = ref(false);
 	
 	function handleSizeChange(val) {
 	}
@@ -209,8 +216,6 @@
 	const categoryAttributeList = ref([]);
 	const categoryList = ref([]);
 	const companyList = ref([]);
-
-	const showDownload = ref(false);
 
 	const open = ref(false);
 	const loading = ref(true);
@@ -291,11 +296,7 @@
 		console.log('全选操作，选中的行：', selections);
 		previousSelections.value = selections;
 		console.log("previousSelections size=", previousSelections.value.length);
-		if(previousSelections.value.length > 0){
-			showDownload.value = true;
-		} else {
-			showDownload.value = false;
-		}
+		showDownload.value = previousSelections.value.length > 0;
 	}
 
 	function handleSelect(selection, row) {
@@ -305,11 +306,7 @@
 		previousSelections.value = selection;
 		
 		console.log("previousSelections size=", previousSelections.value.length);
-		if(previousSelections.value.length > 0){
-			showDownload.value = true;
-		} else {
-			showDownload.value = false;
-		}
+		showDownload.value = previousSelections.value.length > 0;
 	}
 	
 	function downloadData() {
@@ -393,7 +390,7 @@
 	});
 	
 	const componentDataFilterFile = inject('componentDataFilterFile');
-	watch(componentDataFilterFile, (newValue) => {
+	watch(() => componentDataFilterFile.value, (newValue) => {
 		if (newValue) {
 			console.log('showComponentData received componentDataFilterFile=', newValue);
 			uploadFilterFile(newValue.raw || newValue).then(response => {
@@ -402,7 +399,7 @@
 				total.value = response.total;
 			});
 		}
-	});
+	}, { deep: true });
 
 
 	// 列表数据
