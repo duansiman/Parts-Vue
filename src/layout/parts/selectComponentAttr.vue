@@ -43,8 +43,8 @@
 
 <script setup>
 	import { inject, watch, computed } from 'vue';
-	import { listCategoryAttributeShowList } from "@/api/parts/categoryAttributeShowList";
-	import { listUserCategoryAttribute } from "@/api/parts/categoryAttribute";
+	import { listCategoryAttributeShowList } from "@/api/parts/user/userCategoryAttributeShowList";
+	import { listUserCategoryAttribute } from "@/api/parts/user/userCategoryAttribute";
 	import TextDragList from './TextDragList.vue';
 	
 	const { proxy } = getCurrentInstance();

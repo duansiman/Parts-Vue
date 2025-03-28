@@ -44,7 +44,7 @@
 	import { computed, inject } from 'vue';
 	import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus'
 	
-	import { listCompany } from "@/api/parts/company";
+	import { listCompany } from "@/api/parts/user/userCompany";
 	import loginNotifyStore from '@/store/modules/loginNotify'
 	
 	const { proxy } = getCurrentInstance();

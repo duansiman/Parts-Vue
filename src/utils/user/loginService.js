@@ -11,7 +11,10 @@ export const loginService = () => {
 	
     const loginName = computed(() => userStore.name);
 	
-    const isLogin = computed(() => userStore.token!= "");
+    const isLogin = computed(() => {
+		console.log("userStore.token", userStore.token);
+		return userStore.token && userStore.token!= "";
+	});
 	
     const logout = () => userStore.logOut();
 

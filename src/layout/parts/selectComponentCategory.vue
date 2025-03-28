@@ -34,7 +34,7 @@
 <script setup name="SelectCategroy">
 	import { computed } from 'vue';
 	import { inject } from 'vue';
-	import { listCategory } from "@/api/parts/category";
+	import { listCategory } from "@/api/parts/user/userCategory";
 	import HeaderSearch from '@/components/HeaderSearch'
 	import { Calendar, Search } from '@element-plus/icons-vue'
 	

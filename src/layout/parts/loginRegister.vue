@@ -235,6 +235,7 @@
 	      login(loginForm.value).then(() => {
 			  getInfo().then(() => {
 				showLoginOpen.value = false;
+				loading.value = false;
 			  });
 	      }).catch(() => {
 	        loading.value = false;

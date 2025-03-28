@@ -131,11 +131,11 @@
 <script setup name="ShowComponentData">
 	import { computed, inject, watch } from 'vue';
 	
-	import { listCategory } from "@/api/parts/category";
-	import { listComponentData, uploadFilterFile, downloadComponentData } from "@/api/parts/componentData";
-	import { listCompany } from "@/api/parts/company";
+	import { listCategory } from "@/api/parts/user/userCategory";
+	import { listComponentData, uploadFilterFile, downloadComponentData } from "@/api/parts/user/userComponentData";
+	import { listCompany } from "@/api/parts/user/userCompany";
 	import { getToken } from "@/utils/auth";
-	import { showCategoryAttribute } from "@/api/parts/categoryAttributeShowList";
+	import { showCategoryAttribute } from "@/api/parts/user/userCategoryAttributeShowList";
 
 	const { proxy } = getCurrentInstance();
 	const { loginName, isLogin, logout, login, getInfo } = proxy.loginService();
@@ -337,8 +337,8 @@
 	const secondFilter = inject('secondFilter');
 	watch(secondFilter, (newValue) => {
 		console.log("showComponentData secondFilter", newValue, componentDataFilterFile.value)
-		if (newValue && componentDataFilterFile.value) {
-			uploadFilterFile(componentDataFilterFile.value).then(response => {
+		if (newValue && componentDataFilterFile.value.raw) {
+			uploadFilterFile(componentDataFilterFile.value.raw).then(response => {
 				categoryAttributeList.value = response.data.attrItems;
 				componentDataList.value = response.data.dataItems;
 				total.value = response.total;
